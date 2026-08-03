@@ -424,6 +424,15 @@ with tab_history:
             mime="application/json",
         )
 
+        st.divider()
+        confirm_delete = st.checkbox("I understand this can't be undone")
+        if st.button("🗑️ Delete sent history", disabled=not confirm_delete):
+            st.session_state.sent_log = {}
+            emailer.save_sent_log(SENT_LOG_PATH, {})
+            refresh_previously_sent()
+            st.success("Sent history cleared.")
+            st.rerun()
+
     st.caption(
         "⚠️ On free hosting this file can be wiped when the app restarts. Download it after each "
         "batch and re-upload it (Upload File tab) if the app ever forgets."
